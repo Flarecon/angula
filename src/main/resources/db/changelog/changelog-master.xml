@@ -1,0 +1,65 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+  http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1" author="alok">
+        <createTable tableName="todos">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(80)"/>
+            <column name="body" type="TEXT"/>
+            <column name="date" type="TIMESTAMP"/>
+            <column name="client_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="alok">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(50)"/>
+            <column name="role" type="VARCHAR(10)" defaultValue="ROLE_USER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="alok">
+        <createTable tableName="clients">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="mobile" type="VARCHAR(15)"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="alok">
+        <addForeignKeyConstraint 
+            baseTableName="clients" 
+            baseColumnNames="user_id" 
+            constraintName="userClientReferance" 
+            referencedTableName="users" 
+            referencedColumnNames="id"
+            onDelete="SET NULL" />
+
+        <addForeignKeyConstraint 
+            baseTableName="todos" 
+            baseColumnNames="client_id" 
+            constraintName="ClientTodoReferance" 
+            referencedTableName="clients" 
+            referencedColumnNames="id"
+            onDelete="CASCADE" />
+    </changeSet>
+
+</databaseChangeLog>

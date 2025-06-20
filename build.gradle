@@ -1,0 +1,59 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	configurations.configureEach {
+//		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+//		exclude group: 'commons-logging', module: 'commons-logging'
+//	}
+//
+//	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation ('org.springframework.boot:spring-boot-starter-web'){
+		exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+		exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+		exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+	}
+	implementation 'org.springframework.batch:spring-batch-core'
+	implementation 'com.google.code.gson:gson'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// implementation(platform('org.springframework.security:spring-security-bom:6.4.4'))
+    // implementation 'org.springframework.security:spring-security-core'
+    // implementation 'org.springframework.security:spring-security-config'
+    // implementation 'org.springframework.security:spring-security-web'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+	// runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'org.liquibase:liquibase-core'
+	runtimeOnly 'org.postgresql:postgresql'
+	compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jar {
+	archiveBaseName.set('angula')
+	archiveVersion.set('api')
+}
