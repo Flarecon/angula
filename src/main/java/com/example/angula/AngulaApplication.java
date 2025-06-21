@@ -6,12 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.example.reactor.components.Sweet;
 
 @ComponentScan(basePackages = {"com.example.reactor,com.example.angula"}, 
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Sweet.class))
 @EnableCaching
+@EnableScheduling
 @SpringBootApplication
 public class AngulaApplication {
 
