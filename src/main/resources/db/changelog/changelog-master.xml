@@ -62,4 +62,12 @@
             onDelete="CASCADE" />
     </changeSet>
 
+    <changeSet id="5" author="alok">
+        <createTable tableName="task">
+            <column name="id" type="BIGINT" autoIncrement="true" />
+            <column name="task" type="VARCHAR(80)" />
+            <column name="cron" type="VARCHAR(50)" />
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
