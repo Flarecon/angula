@@ -1,9 +1,11 @@
 package com.example.angula.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class ClientRestController {
         return ResponseEntity.ok("Client created");
     }
 
+    @Cacheable(value = "client") // cache for this method
     @GetMapping("/{id}")
     public ResponseEntity<AngulaClient> getClientById(@PathVariable("id") Long id) {
         return clientRepo.findById(id)
@@ -39,6 +42,7 @@ public class ClientRestController {
         return ResponseEntity.ok(clientRepo.findAll());
     }
 
+    @CachePut(value = "client") // update cache
     @PutMapping("/{id}")
     public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody AngulaClient client) {
         return clientRepo.findById(id).map(existingClient -> {
@@ -51,6 +55,7 @@ public class ClientRestController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    @CacheEvict(value = "client") // evict cache
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteClient(@PathVariable("id") Long id) {
         if (clientRepo.existsById(id)) {
