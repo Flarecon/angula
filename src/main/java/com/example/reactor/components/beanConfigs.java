@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.example.reactor.middleware.LoggingInterceptor;
+import com.example.reactor.middleware.interceptor.LoggingInterceptor;
 
 @Configuration
 public class beanConfigs implements WebMvcConfigurer{

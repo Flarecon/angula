@@ -1,4 +1,4 @@
-package com.example.reactor.middleware;
+package com.example.reactor.middleware.interceptor;
 
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
