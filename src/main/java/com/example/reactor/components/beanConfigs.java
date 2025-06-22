@@ -2,18 +2,24 @@ package com.example.reactor.components;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.reactor.middleware.interceptor.LoggingInterceptor;
+import com.example.reactor.service.ServiceToService;
 
 @Configuration
 public class beanConfigs implements WebMvcConfigurer{
     LocalDateTime now = LocalDateTime.now();
+    
+    @Value("${yt.baseurl}")
+    String baseurl;
 
     @Bean
     String sugar(){
@@ -40,6 +46,11 @@ public class beanConfigs implements WebMvcConfigurer{
     @Bean
     Sweet sweet3(){
         return new Sweet("icecream", Color.WHITE);
+    }
+
+    @Bean(name = "YtClient")
+    RestClient restClient(RestClient.Builder builder) {
+        return builder.baseUrl(baseurl).build();
     }
 
     @Override

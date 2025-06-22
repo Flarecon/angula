@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tasks")
+@Table(name = "task")
 public class AngulaTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

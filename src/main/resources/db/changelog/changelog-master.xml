@@ -72,4 +72,16 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="6" author="alok">
+        <createTable tableName="videos">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="video_id" type="VARCHAR(15)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="video_title" type="TEXT" />
+        </createTable>
+    </changeSet>
+    
 </databaseChangeLog>
