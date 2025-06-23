@@ -49,8 +49,13 @@ public class beanConfigs implements WebMvcConfigurer{
     }
 
     @Bean(name = "YtClient")
-    RestClient restClient(RestClient.Builder builder) {
+    RestClient restClientYt(RestClient.Builder builder) {
         return builder.baseUrl(baseurl).build();
+    }
+
+    @Bean(name = "sheetClient")
+    RestClient restClientSheet(RestClient.Builder builder) {
+        return builder.baseUrl("https://sheetdb.io/api/v1/").build();
     }
 
     @Override

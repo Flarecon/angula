@@ -25,6 +25,7 @@ public class YtController {
     public YtVideoData getVideoById(@PathVariable("id") Long id) {
         AngulaYt video = ytRepo.findById(id).get();
         return YtVideoData.builder()
+        .id(video.getId())
         .embedUrl("https://www.youtube.com/embed/" + video.getVideoId())
         .videoUrl("https://youtu.be/" + video.getVideoId())
         .thumbnailUrl("https://i.ytimg.com/vi/" + video.getVideoId() + "/sddefault.jpg")
@@ -36,6 +37,7 @@ public class YtController {
     public YtVideoData getVideoByVideoId(@PathVariable("id") String id) {
         AngulaYt video = ytRepo.findByVideoId(id).get();
         return YtVideoData.builder()
+        .id(video.getId())
         .embedUrl("https://www.youtube.com/embed/" + video.getVideoId())
         .videoUrl("https://youtu.be/" + video.getVideoId())
         .thumbnailUrl("https://i.ytimg.com/vi/" + video.getVideoId() + "/sddefault.jpg")

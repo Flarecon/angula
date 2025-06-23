@@ -8,12 +8,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import com.example.angula.database.model.AngulaYt;
 import com.example.angula.database.repository.YtRepo;
+import com.example.reactor.jobs.LogScheduler;
+import com.example.reactor.jobs.ServiceScheduler;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -31,16 +37,62 @@ public class ServiceToService {
 
     @Autowired
     @Qualifier("YtClient")
-    public RestClient restClient;
+    public RestClient restClientYt;
+
+    @Autowired
+    @Qualifier("sheetClient")
+    public RestClient restClientSheet;
 
     @Autowired
     public YtRepo ytRepo;
+
+    @Autowired
+    GenericApplicationContext context;
+
+    @Autowired
+    private ScheduledAnnotationBeanPostProcessor postProcessor;
+
+
+    public void getSheetDataAndRegisterBean(){
+        
+        Class<?>[] classList = {ServiceScheduler.class, LogScheduler.class};
+
+        List<SheetData> data = restClientSheet.get().uri("u5fpu5kogc31o").retrieve().body(new ParameterizedTypeReference<List<SheetData>>() {});
+        if(data != null){
+
+            for(SheetData sheet : data){
+                if(sheet.enabled.equals("TRUE")){
+                    if(!context.containsBean(sheet.bean)){
+                        Integer classIndex = -1;
+                        
+                        try{
+                        classIndex = Integer.parseInt(sheet.index);
+                        }catch(NumberFormatException e){
+                            classIndex = -1;
+                        }
+                        Class<?> className = sheet.index != null ? classList[classIndex] : null;
+                        if (sheet.index != null && classIndex >= 0 && classIndex < classList.length){
+                            context.registerBean(sheet.bean, className);
+                            postProcessor.postProcessAfterInitialization(context.getBean(sheet.bean), sheet.bean);
+                            System.out.println(sheet.bean + " Bean Created of class " + className.getName());
+                        }
+                    }
+                }
+                else if(sheet.enabled.equals("FALSE")){
+                    if(context.containsBeanDefinition(sheet.bean)){
+                        context.removeBeanDefinition(sheet.bean);
+                        System.out.println(sheet.bean + " Bean Destroyed");
+                    }
+                }
+            }
+        }
+    }
 
     @Transactional
     public void getPlaylistData() {
         int newVideo = 0;
         // System.out.println("key: " + key + " \nplaylistId: " + playlistId);
-        YtResponse ytResponse = restClient.get()
+        YtResponse ytResponse = restClientYt.get()
                 .uri("/playlistItems?part=snippet&maxResults=50&playlistId=" + playlistId + "&key=" + key).retrieve()
                 .body(YtResponse.class);
 
@@ -78,4 +130,9 @@ class YtResponse {
     public static class ResourceId {
         public String videoId;
     }
+}
+class SheetData{
+    String bean;
+    String enabled;
+    String index;
 }
