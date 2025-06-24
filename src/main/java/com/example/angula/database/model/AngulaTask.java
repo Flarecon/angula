@@ -1,5 +1,7 @@
 package com.example.angula.database.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +12,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "task")
-public class AngulaTask {
+public class AngulaTask implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     Long id;

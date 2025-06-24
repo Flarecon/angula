@@ -1,4 +1,6 @@
 package com.example.angula.database.model;
+import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 
 import jakarta.persistence.Column;
@@ -12,7 +14,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "users")
-public class AngulaUser {
+public class AngulaUser implements Serializable{
     @Id
     @Expose
     @GeneratedValue(strategy = GenerationType.IDENTITY)
