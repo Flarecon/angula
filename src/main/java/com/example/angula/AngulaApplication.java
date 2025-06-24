@@ -16,8 +16,6 @@ import com.example.reactor.components.Sweet;
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Sweet.class))
 @EnableCaching
 @EnableScheduling
-@EnableMethodSecurity
-@EnableGlobalAuthentication
 @SpringBootApplication
 public class AngulaApplication {
 
