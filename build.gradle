@@ -34,6 +34,7 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-undertow'
 	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation 'com.google.code.gson:gson:2.13.1'
 	implementation'org.springframework.boot:spring-boot-starter-actuator'

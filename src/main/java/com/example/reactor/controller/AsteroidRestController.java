@@ -3,6 +3,7 @@ package com.example.reactor.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,7 @@ public class AsteroidRestController {
                 + "\n------------------------");
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/sweet/{name}")
     public ResponseEntity<Sweet> getSweets(@PathVariable("name") String name) throws CustomException {
         switch (name) {

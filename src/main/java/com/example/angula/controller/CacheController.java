@@ -3,6 +3,7 @@ package com.example.angula.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class CacheController {
         return client;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     @DeleteMapping("/{name}")
     public String clearCache(@PathVariable("name") String name) {

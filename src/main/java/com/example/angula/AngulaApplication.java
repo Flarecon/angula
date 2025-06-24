@@ -7,6 +7,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import com.example.reactor.components.Sweet;
 
@@ -14,6 +16,8 @@ import com.example.reactor.components.Sweet;
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Sweet.class))
 @EnableCaching
 @EnableScheduling
+@EnableMethodSecurity
+@EnableGlobalAuthentication
 @SpringBootApplication
 public class AngulaApplication {
 
