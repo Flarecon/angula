@@ -16,6 +16,11 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllExceptions(Exception e){
-        return new ResponseEntity<>("error occured at " + LocalDateTime.now() + " says\n" + e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(
+            "error occured at " + LocalDateTime.now() + " says" + "\n" + 
+            "message : " + e.getMessage() + "\n" +
+            "cause : " + e.getCause() + "\n" + 
+            "stacktrace : " + e.getStackTrace() + "\n" + 
+            "class : " + e.getClass() + "\n", HttpStatus.NOT_FOUND);
     }
 }

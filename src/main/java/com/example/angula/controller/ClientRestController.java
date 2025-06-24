@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ClientRestController {
     @Autowired
     AngulaUserRepo userRepo;
 
+    @Transactional
     @PostMapping
     public ResponseEntity<String> createClient(@RequestBody AngulaClient client) {
         client.setUser(userRepo.findById(client.getUser().getId()).get());
@@ -29,19 +31,20 @@ public class ClientRestController {
         return ResponseEntity.ok("Client created");
     }
 
+    @Transactional
     @Cacheable(value = "client") // cache for this method
     @GetMapping("/{id}")
-    public ResponseEntity<AngulaClient> getClientById(@PathVariable("id") Long id) {
-        return clientRepo.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public AngulaClient getClientById(@PathVariable("id") Long id) {
+        return clientRepo.findById(id).get();
     }
 
+    @Transactional
     @GetMapping
     public ResponseEntity<List<AngulaClient>> getAllClients() {
         return ResponseEntity.ok(clientRepo.findAll());
     }
 
+    @Transactional
     @CachePut(value = "client") // update cache
     @PutMapping("/{id}")
     public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody AngulaClient client) {
@@ -55,6 +58,7 @@ public class ClientRestController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    @Transactional
     @CacheEvict(value = "client") // evict cache
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteClient(@PathVariable("id") Long id) {
