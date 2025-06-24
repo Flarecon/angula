@@ -35,6 +35,7 @@ public class ClientRestController {
     @Cacheable(value = "client") // cache for this method
     @GetMapping("/{id}")
     public AngulaClient getClientById(@PathVariable("id") Long id) {
+        System.out.println("get client by id: " + id);
         return clientRepo.findById(id).get();
     }
 

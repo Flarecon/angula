@@ -1,5 +1,6 @@
 package com.example.angula.database.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -18,7 +19,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "clients")
-public class AngulaClient {
+public class AngulaClient implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

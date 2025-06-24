@@ -1,5 +1,6 @@
 package com.example.angula.database.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -13,7 +14,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "todos")
-public class AngulaTodo {
+public class AngulaTodo implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

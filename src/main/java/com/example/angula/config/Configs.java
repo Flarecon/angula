@@ -35,33 +35,4 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
             }
         };
     }
-
-    @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        // This is the critical fix:
-        mapper.activateDefaultTyping(
-            LaissezFaireSubTypeValidator.instance,
-            ObjectMapper.DefaultTyping.NON_FINAL,
-            JsonTypeInfo.As.PROPERTY
-        );
-
-        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(mapper);
-
-        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
-
-        return RedisCacheManager.builder(connectionFactory).cacheDefaults(config).build();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule()); // ⬅️ This handles LocalDateTime
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // optional: ISO format
-        return mapper;
-    }
  }
