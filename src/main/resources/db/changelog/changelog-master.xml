@@ -87,5 +87,9 @@
     <changeSet id="7" author="alok">
         <modifyDataType tableName="users" columnName="password" newDataType="VARCHAR(255)" />
     </changeSet>
+
+    <changeSet id="8" author="alok">
+        <modifyDataType tableName="users" columnName="role" newDataType="VARCHAR(50)" />
+    </changeSet>
     
 </databaseChangeLog>
