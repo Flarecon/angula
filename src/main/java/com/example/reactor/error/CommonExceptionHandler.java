@@ -28,7 +28,7 @@ public class CommonExceptionHandler {
     public ResponseEntity<?> badCredsExceptions(Exception e){
         return new ResponseEntity<>("Error at " + LocalDateTime.now() + " says" + "\n" +
         "message:" + e.getMessage() + "\n" +
-        "cause:" + "wrong username or password"
+        "cause:" + "invalid username or password"
         , HttpStatus.UNAUTHORIZED);
     }
 

@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.reactor.middleware.interceptor.LoggingInterceptor;
-import com.example.reactor.service.ServiceToService;
 
 @Configuration
 public class beanConfigs implements WebMvcConfigurer{
