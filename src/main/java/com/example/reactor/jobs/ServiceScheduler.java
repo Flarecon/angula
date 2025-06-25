@@ -9,7 +9,7 @@ import com.example.reactor.service.ServiceToService;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
-// @Component
+@Component
 @ConditionalOnProperty(name = "reactor.scheduler.yt", havingValue = "true", matchIfMissing = true)
 public class ServiceScheduler {
     
