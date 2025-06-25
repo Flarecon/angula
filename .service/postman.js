@@ -1,10 +1,17 @@
-const user = "alokg252";
-const pass = "pass@123";
-const url = "http://127.0.0.1:8080/cache/client";
+const user = "user";
+const pass = "1234";
+const url = "http://127.0.0.1:8080/user";
 const headers = {
-    Authorization:`basic ${btoa(`${user}:${pass}`)}`,
+    "Authorization":`basic ${btoa(`${user}:${pass}`)}`,
     "Content-Type":"application/json"
 }
+
+const userData = {
+    username:'alokg252',
+    password:'pass@123',
+    role:'ROLE_ADMIN'
+}
+
 const payload = {
   name: 'alokg252',
   email: 'akg@reactor.com',
@@ -20,7 +27,7 @@ function POST(){
     fetch(url,{
         method:"POST",
         headers: headers,
-        body:JSON.stringify(payload)
+        body:JSON.stringify(userData)
     }).then(res => res.json())
     .then(res => console.log(res))
 }
@@ -29,7 +36,7 @@ function PUT(){
     fetch(url,{
         method:"PUT",
         headers: headers,
-        body:JSON.stringify(payload)
+        body:JSON.stringify(userData)
     }).then(res => res.json())
     .then(res => console.log(res))
 }
@@ -50,4 +57,4 @@ function DELETE(){
     .then(res => console.log(res))
 }
 
-DELETE()
+POST();

@@ -1,5 +1,11 @@
 package com.example.angula.database.model;
-import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.google.gson.annotations.Expose;
 
@@ -9,12 +15,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "users")
-public class AngulaUser implements Serializable{
+public class AngulaUser implements UserDetails {
     @Id
     @Expose
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +35,24 @@ public class AngulaUser implements Serializable{
     @Expose
     @Column(length = 20, unique = true)
     String username;
-    
-    @Column(length = 50)
+
     String password;
 
     @Expose
     @Column(length = 10)
-    String Role = "USER";
+    @Builder.Default
+    String role = "ROLE_USER";
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
+    }
+
+    public String toString() {
+
+        return this.id + " " +
+                this.username + " " +
+                this.password + " " +
+                this.role;
+    }
 }

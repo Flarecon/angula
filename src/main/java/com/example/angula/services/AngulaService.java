@@ -1,5 +1,6 @@
 package com.example.angula.services;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -10,11 +11,12 @@ import com.example.angula.database.repository.AngulaUserRepo;
 
 @Service
 public class AngulaService {
-
+    PasswordEncoder encoder;
     AngulaUserRepo userRepo;
 
-    public AngulaService(AngulaUserRepo userRepo) {
+    public AngulaService(AngulaUserRepo userRepo, PasswordEncoder encoder) {
         this.userRepo = userRepo;
+        this.encoder = encoder;
     }
 
     @Transactional(propagation = Propagation.REQUIRED // default, continues current transaction else starts new
@@ -45,4 +47,15 @@ public class AngulaService {
         user.setUsername(user.getUsername() + " from service");
         return user;
     }
+
+	public void createInitialUser() throws Exception{
+		new AngulaUser();
+		userRepo.save(
+			AngulaUser.builder()
+				.username("user")
+				.password(encoder.encode("1234"))
+				.role("USER")
+				.build()
+		);
+	}
 }

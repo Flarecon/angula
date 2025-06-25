@@ -83,5 +83,9 @@
             <column name="video_title" type="TEXT" />
         </createTable>
     </changeSet>
+
+    <changeSet id="7" author="alok">
+        <modifyDataType tableName="users" columnName="password" newDataType="VARCHAR(255)" />
+    </changeSet>
     
 </databaseChangeLog>
