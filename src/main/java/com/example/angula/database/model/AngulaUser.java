@@ -1,7 +1,8 @@
 package com.example.angula.database.model;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,11 +42,13 @@ public class AngulaUser implements UserDetails {
     @Expose
     @Column(length = 10)
     @Builder.Default
-    String role = "ROLE_USER";
+    String role = "USER";
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        return Arrays.stream(role.split(","))
+            .map(String::trim).map(role -> "ROLE_" + role).map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
     }
 
     public String toString() {
