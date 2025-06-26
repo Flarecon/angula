@@ -1,6 +1,9 @@
 package com.example.angula.controller;
 
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,9 @@ public class TaskRestController {
     
     @Autowired
     private TaskRepo taskRepo;
+
+    @Autowired
+    private CacheManager cacheManager;
     
     @GetMapping
     public Iterable<AngulaTask> getTasks() {
@@ -26,26 +32,39 @@ public class TaskRestController {
     }
     
     @PostMapping
-    public AngulaTask createTask(@RequestBody AngulaTask task) {
-        return taskRepo.save(task);
+    public ResponseEntity<?> createTask(@RequestBody AngulaTask task) {
+        AngulaTask savedTask = taskRepo.save(task);
+        cacheManager.getCache("task").putIfAbsent(savedTask.getId(), savedTask);
+        return ResponseEntity.ok(savedTask);
     }
     
     @GetMapping("/{id}")
-    public AngulaTask getTask(@PathVariable("id") Long id) {
-        return taskRepo.findById(id).orElseThrow();
+    public ResponseEntity<?> getTask(@PathVariable("id") Long id) {
+        try {
+            var item = cacheManager.getCache("task").get(id);
+            if(item != null)
+                return ResponseEntity.ok(item.get());
+        } catch (Exception e) {}
+        var task = taskRepo.findById(id).orElseThrow();
+        cacheManager.getCache("task").put(id, task);
+        return ResponseEntity.ok(task);
     }
     
     @PutMapping("/{id}")
-    public AngulaTask updateTask(@PathVariable("id") Long id, @RequestBody AngulaTask task) {
+    public ResponseEntity<?> updateTask(@PathVariable("id") Long id, @RequestBody AngulaTask task) {
         AngulaTask existingTask = taskRepo.findById(id).orElseThrow();
         existingTask.setTask(task.getTask());
         existingTask.setCron(task.getCron());
-        return taskRepo.save(existingTask);
+        taskRepo.save(existingTask);
+        cacheManager.getCache("task").put(id, existingTask);
+        return ResponseEntity.ok("task updated");
     }
     
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteTask(@PathVariable("id") Long id) {
         taskRepo.deleteById(id);
+        cacheManager.getCache("task").evictIfPresent(id);
+        return ResponseEntity.ok("task deleted");
     }
 
 }

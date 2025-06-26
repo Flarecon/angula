@@ -1,6 +1,7 @@
 package com.example.angula.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -50,15 +51,16 @@ public class ClientRestController {
     @Transactional
     @CachePut(value = "client") // update cache
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody AngulaClient client) {
+    public AngulaClient updateClient(@PathVariable("id") Long id, @RequestBody AngulaClient client) {
         return clientRepo.findById(id).map(existingClient -> {
             existingClient.setName(client.getName());
             existingClient.setEmail(client.getEmail());
             existingClient.setMobile(client.getMobile());
             existingClient.setUser(client.getUser());
+            existingClient.setTodos(client.getTodos());
             clientRepo.save(existingClient);
-            return ResponseEntity.ok("Client updated");
-        }).orElse(ResponseEntity.notFound().build());
+            return existingClient;
+        }).orElse(null);
     }
 
     @Transactional
