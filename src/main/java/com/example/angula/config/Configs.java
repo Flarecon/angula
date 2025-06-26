@@ -32,7 +32,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
         };
     }
 
-    // @Bean
+    @Bean
     public CacheManager cacheManager(){
         CaffeineCacheManager manager = new CaffeineCacheManager();
         manager.registerCustomCache("client", 
