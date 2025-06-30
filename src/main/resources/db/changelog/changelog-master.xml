@@ -91,5 +91,19 @@
     <changeSet id="8" author="alok">
         <modifyDataType tableName="users" columnName="role" newDataType="VARCHAR(50)" />
     </changeSet>
+
+    <changeSet id="9" author="alok">
+        <createTable tableName="posts">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="title" type="TEXT" />
+            <column name="content" type="TEXT" />
+            <column name="created_by" type="VARCHAR(100)" />
+            <column name="updated_by" type="VARCHAR(100)" />
+            <column name="created_at" type="TIMESTAMP" />
+            <column name="updated_at" type="TIMESTAMP" />
+        </createTable>
+    </changeSet>
     
 </databaseChangeLog>

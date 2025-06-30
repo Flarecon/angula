@@ -1,7 +1,11 @@
  package com.example.angula.config;
 
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +21,10 @@ import com.github.benmanes.caffeine.cache.Caffeine;
  @Configuration
  @EnableWebMvc
  public class Configs {
-    @Bean
+     private static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATETIME_FORMAT);
+
+     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @SuppressWarnings("null")
@@ -51,4 +58,13 @@ import com.github.benmanes.caffeine.cache.Caffeine;
         
         return manager;
     }
+
+     @Bean
+     public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
+         return builder -> {
+             builder.serializers(new LocalDateTimeSerializer(FORMATTER));
+             builder.deserializers(new LocalDateTimeDeserializer(FORMATTER));
+             builder.simpleDateFormat(DATETIME_FORMAT);
+         };
+     }
  }

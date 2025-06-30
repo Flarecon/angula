@@ -9,7 +9,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import com.example.reactor.components.Sweet;
 
-@ComponentScan(basePackages = {"com.example.reactor,com.example.angula"}, 
+@ComponentScan(basePackages = {"com.example.reactor,com.example.angula"},
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Sweet.class))
 @EnableCaching
 @EnableScheduling
