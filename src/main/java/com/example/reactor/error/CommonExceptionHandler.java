@@ -14,12 +14,14 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleCustomExceptions(Exception e){
-        return new ResponseEntity<>("Custom Error at " + LocalDateTime.now() + " says\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Custom Error at " + LocalDateTime.now() + " says\n" + 
+        "message" + e.getMessage()
+        , HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<?> handleRoleAuthDeniedExceptions(Exception e){
-        return new ResponseEntity<>("Error at " + LocalDateTime.now() + " says" + "\n" +
+        return new ResponseEntity<>(" Auth Refused Error at " + LocalDateTime.now() + " says" + "\n" +
         "message:" + e.getMessage() + "\n" +
         "cause:" + "you are not allowed to access the requested resource"
         , HttpStatus.UNAUTHORIZED);
@@ -27,7 +29,7 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> badCredsExceptions(Exception e){
-        return new ResponseEntity<>("Error at " + LocalDateTime.now() + " says" + "\n" +
+        return new ResponseEntity<>("Bad Creds Error at " + LocalDateTime.now() + " says" + "\n" +
         "message:" + e.getMessage() + "\n" +
         "cause:" + "invalid username or password"
         , HttpStatus.UNAUTHORIZED);
@@ -35,19 +37,19 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<?> IOExceptions(Exception e){
-        return new ResponseEntity<>("Error at " + LocalDateTime.now() + " says" + "\n" +
+        return new ResponseEntity<>("IO Error at " + LocalDateTime.now() + " says" + "\n" +
         "message:" + e.getMessage() + "\n" +
         "cause:" + "invalid username or password"
-        , HttpStatus.UNAUTHORIZED);
+        , HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllExceptions(Exception e){
-        return new ResponseEntity<>(
-            "error occured at " + LocalDateTime.now() + " says" + "\n" + 
+        return new ResponseEntity<>("Global Error at " + LocalDateTime.now() + " says" + "\n" + 
             "message : " + e.getMessage() + "\n" +
             "cause : " + e.getCause() + "\n" + 
             "stacktrace : " + e.getStackTrace() + "\n" + 
-            "class : " + e.getClass() + "\n", HttpStatus.NOT_FOUND);
+            "class : " + e.getClass() + "\n"
+            , HttpStatus.NOT_FOUND);
     }
 }
