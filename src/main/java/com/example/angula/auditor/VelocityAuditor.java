@@ -1,5 +1,6 @@
 package com.example.angula.auditor;
 
+import com.example.angula.Constants;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,9 +18,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class VelocityAuditor implements Serializable {
 
-    @Transient
-    static final String dateFormate = "yyyy-MM-dd,HH:mm:ss";
-
     @CreatedBy
     @Column(name = "created_by")
     public String createdBy;
@@ -29,12 +27,12 @@ public class VelocityAuditor implements Serializable {
     public String updatedBy;
 
     @CreatedDate
-    @JsonFormat(pattern = dateFormate)
+    @JsonFormat(pattern = Constants.DATETIME_FORMAT)
     @Column(name = "created_at")
     public LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    @JsonFormat(pattern = dateFormate)
+    @JsonFormat(pattern = Constants.DATETIME_FORMAT)
     public LocalDateTime updatedAt;
 }

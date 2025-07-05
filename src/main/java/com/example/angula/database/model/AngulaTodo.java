@@ -3,6 +3,9 @@ package com.example.angula.database.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.example.angula.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,5 +27,7 @@ public class AngulaTodo implements Serializable{
     private String title;
     
     private String body;
+    
+    @JsonFormat(pattern = Constants.DATETIME_FORMAT)
     private LocalDateTime date = LocalDateTime.now();
 }
