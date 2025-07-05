@@ -1,5 +1,6 @@
 package com.example.reactor.error;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,14 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> badCredsExceptions(Exception e){
+        return new ResponseEntity<>("Error at " + LocalDateTime.now() + " says" + "\n" +
+        "message:" + e.getMessage() + "\n" +
+        "cause:" + "invalid username or password"
+        , HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<?> IOExceptions(Exception e){
         return new ResponseEntity<>("Error at " + LocalDateTime.now() + " says" + "\n" +
         "message:" + e.getMessage() + "\n" +
         "cause:" + "invalid username or password"

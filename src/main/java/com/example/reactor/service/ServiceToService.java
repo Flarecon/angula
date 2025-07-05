@@ -51,10 +51,18 @@ public class ServiceToService {
 
 
     public void getSheetDataAndRegisterBean(){
+        int changes = 0;
         
         Class<?>[] classList = {ServiceScheduler.class, LogScheduler.class};
 
-        List<SheetData> data = restClientSheet.get().uri("u5fpu5kogc31o").retrieve().body(new ParameterizedTypeReference<List<SheetData>>() {});
+        List<SheetData> data = null;
+        try{
+            data = restClientSheet.get().uri("u5fpu5kogc31o")
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<List<SheetData>>() {});
+        } catch (Exception e) {
+            System.out.println("cannot fetch excel data please check network");
+        }
         if(data != null){
 
             for(SheetData sheet : data){
@@ -63,7 +71,7 @@ public class ServiceToService {
                         Integer classIndex = -1;
                         
                         try{
-                        classIndex = Integer.parseInt(sheet.index);
+                            classIndex = Integer.parseInt(sheet.index);
                         }catch(NumberFormatException e){
                             classIndex = -1;
                         }
@@ -72,6 +80,7 @@ public class ServiceToService {
                             context.registerBean(sheet.bean, className);
                             postProcessor.postProcessAfterInitialization(context.getBean(sheet.bean), sheet.bean);
                             System.out.println(sheet.bean + " Bean Created of class " + className.getName());
+                            changes++;
                         }
                     }
                 }
@@ -79,9 +88,11 @@ public class ServiceToService {
                     if(context.containsBeanDefinition(sheet.bean)){
                         context.removeBeanDefinition(sheet.bean);
                         System.out.println(sheet.bean + " Bean Destroyed");
+                        changes++;
                     }
                 }
             }
+            if(changes == 0) System.out.println("No changes Found in Excel");
         }
     }
 
