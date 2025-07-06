@@ -3,6 +3,7 @@ package com.example.angula.controller;
 import com.example.angula.database.model.AngulaUser;
 import com.example.angula.database.repository.AngulaUserRepo;
 import com.example.angula.services.AngulaService;
+import com.example.reactor.error.ErrorTools;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +49,7 @@ public class UserControlller {
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             transactionManager.rollback(status);
-            log.error("could not create user {}", e.getMessage());
+            ErrorTools.logErrorData(e, "create user controller");
             return ResponseEntity.badRequest().body("could not create user");
         }
     }

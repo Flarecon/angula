@@ -1,15 +1,16 @@
 package com.example.reactor.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -19,10 +20,7 @@ import com.example.reactor.jobs.LogScheduler;
 import com.example.reactor.jobs.ServiceScheduler;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class ServiceToService {
 
@@ -49,46 +47,43 @@ public class ServiceToService {
     @Autowired
     GenericApplicationContext context;
 
-    @Autowired
-    private ScheduledAnnotationBeanPostProcessor postProcessor;
-
-
-    public void getSheetDataAndRegisterBean(){
+    public void getSheetDataAndRegisterBean() throws Exception {
+        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
         int changes = 0;
-        
-        Class<?>[] classList = {ServiceScheduler.class, LogScheduler.class};
+
+        Class<?>[] classList = { ServiceScheduler.class, LogScheduler.class };
 
         List<SheetData> data = null;
-        try{
+        try {
             data = restClientSheet.get().uri(sheetUrl)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<SheetData>>() {});
+                    .body(new ParameterizedTypeReference<List<SheetData>>() {
+                    });
         } catch (Exception e) {
             System.out.println("cannot fetch excel data please check network");
         }
-        if(data != null){
+        if (data != null) {
 
-            for(SheetData sheet : data){
-                if(sheet.enabled.equals("TRUE")){
-                    if(!context.containsBean(sheet.bean)){
+            for (SheetData sheet : data) {
+                if (sheet.enabled.equals("TRUE")) {
+                    if (!context.containsBean(sheet.bean)) {
                         Integer classIndex = -1;
-                        
-                        try{
+
+                        try {
                             classIndex = Integer.parseInt(sheet.index);
-                        }catch(NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             classIndex = -1;
                         }
                         Class<?> className = sheet.index != null ? classList[classIndex] : null;
-                        if (sheet.index != null && classIndex >= 0 && classIndex < classList.length){
-                            context.registerBean(sheet.bean, className);
-                            postProcessor.postProcessAfterInitialization(context.getBean(sheet.bean), sheet.bean);
+                        if (sheet.index != null && classIndex >= 0 && classIndex < classList.length) {
+                            Object bean = factory.createBean(className);
+                            context.getBeanFactory().registerSingleton(sheet.bean, bean);
                             System.out.println(sheet.bean + " Bean Created of class " + className.getName());
                             changes++;
                         }
                     }
-                }
-                else if(sheet.enabled.equals("FALSE")){
-                    if(context.containsBeanDefinition(sheet.bean)){
+                } else if (sheet.enabled.equals("FALSE")) {
+                    if (context.containsBeanDefinition(sheet.bean)) {
                         Object bean = context.getBean(sheet.bean);
                         context.getBeanFactory().destroyBean(bean);
                         context.removeBeanDefinition(sheet.bean);
@@ -97,34 +92,60 @@ public class ServiceToService {
                     }
                 }
             }
-            if(changes == 0) System.out.println("No changes Found in Excel");
+            if (changes == 0)
+                System.out.println("No changes Found in Excel");
         }
     }
 
     @Transactional
     public void getPlaylistData() {
-        int newVideo = 0;
-        // System.out.println("key: " + key + " \nplaylistId: " + playlistId);
+        int created = 0;
+        int updated = 0;
+        int deleted = 0;
+
         YtResponse ytResponse = restClientYt.get()
                 .uri("/playlistItems?part=snippet&maxResults=50&playlistId=" + playlistId + "&key=" + key).retrieve()
                 .body(YtResponse.class);
 
-        if(ytResponse == null || ytResponse.items.isEmpty()){ System.out.println("No results"); return;}
+        if (ytResponse == null || ytResponse.items.isEmpty()) {
+            System.out.println("No results");
+            return;
+        }
+        Map<String, String> videoMap = new HashMap<>();
+        ytRepo.findAll().forEach(video -> videoMap.put(video.getVideoId(), video.getVideoTitle()));
+
         for (YtResponse.Item item : ytResponse.items) {
             String title = item.snippet.title;
             String videoId = item.snippet.resourceId.videoId;
-            try {
+            String existingData = videoMap.get(videoId);
+
+            if (existingData == null) {
+                // video not in database
                 ytRepo.save(AngulaYt.builder().videoId(videoId).videoTitle(title).build());
-                newVideo++;
-            }
-            catch (DataIntegrityViolationException | ConstraintViolationException e) {
-                log.info("Skipping duplicate entry");
-            }
-            catch (Exception e) {
-                System.out.println("Error: " + e.getMessage() + " for videoId: " + videoId);
+                created++;
+            } else {
+                // video is in database
+                videoMap.remove(videoId);
+                if (existingData.equals(title))
+                    continue;
+
+                // title is updated
+                ytRepo.updateTitleByVideoId(videoId, title);
+                updated++;
             }
         }
-        System.out.println("Youtube Video Database Refreshed at " + LocalDateTime.now() + " with " + newVideo + " new videos");
+
+        // deleting deleted data
+        for (String videoId : videoMap.keySet()) {
+            ytRepo.deleteByVideoId(videoId);
+            deleted++;
+        }
+
+        System.out.println("Youtube Video Database Refreshed at " +
+                LocalDateTime.now() + " with \n" +
+                "created videos : " + created + "\n" +
+                "updated videos : " + updated + "\n" +
+                "deleted videos : " + deleted + "\n");
     }
 }
 
@@ -144,7 +165,8 @@ class YtResponse {
         public String videoId;
     }
 }
-class SheetData{
+
+class SheetData {
     String bean;
     String enabled;
     String index;

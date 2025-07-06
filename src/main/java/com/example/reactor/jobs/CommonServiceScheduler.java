@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.example.angula.annotation.JobExecutor;
+import com.example.reactor.error.ErrorTools;
 import com.example.reactor.service.ServiceToService;
 
 @JobExecutor(format = "{method} of {class} is Running at {timestamp}")
@@ -18,7 +19,7 @@ public class CommonServiceScheduler {
         try{
             service.getSheetDataAndRegisterBean();
         }catch(Exception e){
-            System.out.println(e.getMessage());
+            ErrorTools.logErrorData(e, "fetch sheetdb data");
         }
     }
 }
