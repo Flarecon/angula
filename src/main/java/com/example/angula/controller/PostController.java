@@ -64,6 +64,4 @@ public class PostController {
     public void deletePost(@PathVariable Long id) {
         postRepo.deleteById(id);
     }
-
-
 }

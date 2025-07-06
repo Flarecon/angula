@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.angula.database.model.AngulaYt;
 import com.example.angula.database.repository.YtRepo;
 import com.example.reactor.views.YtVideoData;
+import com.example.reactor.views.YtVideoRecord;
 
 @RestController
 @RequestMapping("/video")
@@ -21,20 +22,20 @@ public class YtController {
     }
 
     @GetMapping("/{id}")
-    public YtVideoData getVideoById(@PathVariable("id") Long id) {
-        AngulaYt video = ytRepo.findById(id).get();
-        return YtVideoData.builder()
-        .id(video.getId())
-        .embedUrl("https://www.youtube.com/embed/" + video.getVideoId())
-        .videoUrl("https://youtu.be/" + video.getVideoId())
-        .thumbnailUrl("https://i.ytimg.com/vi/" + video.getVideoId() + "/sddefault.jpg")
-        .title(video.getVideoTitle())
-        .build();
+    public YtVideoRecord getVideoById(@PathVariable("id") Long id) {
+        AngulaYt video = ytRepo.findById(id).orElseThrow();
+        return new YtVideoRecord(
+                video.getId(),
+                video.getVideoTitle(),
+                "https://i.ytimg.com/vi/" + video.getVideoId() + "/sddefault.jpg",
+                "https://youtu.be/" + video.getVideoId(),
+                "https://www.youtube.com/embed/" + video.getVideoId()
+            );
     }
 
     @GetMapping("/get/{id}")
     public YtVideoData getVideoByVideoId(@PathVariable("id") String id) {
-        AngulaYt video = ytRepo.findByVideoId(id).get();
+        AngulaYt video = ytRepo.findByVideoId(id).orElseThrow();
         return YtVideoData.builder()
         .id(video.getId())
         .embedUrl("https://www.youtube.com/embed/" + video.getVideoId())

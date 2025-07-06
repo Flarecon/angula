@@ -57,7 +57,7 @@ public class UserControlller {
     @ResponseBody
     public ResponseEntity<?> getUserBYId(@PathVariable("id") Long id) {
         var user = userRepo.findById(id);
-        return ResponseEntity.ok(user.get());
+        return ResponseEntity.ok(user.orElseThrow());
     }
 
     @GetMapping("gets/{id}")
@@ -82,7 +82,7 @@ public class UserControlller {
         existingUser.get().setUsername(user.getUsername());
         existingUser.get().setPassword(user.getPassword());
         existingUser.get().setRole(user.getRole());
-        userRepo.save(existingUser.get());
+        userRepo.save(existingUser.orElseThrow());
         return ResponseEntity.ok(user);
     }
 
