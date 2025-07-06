@@ -4,7 +4,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Component
+import com.example.angula.annotation.JobExecutor;
+
+@JobExecutor
 @ConditionalOnProperty(name = "reactor.scheduler.log", havingValue = "true", matchIfMissing = true)
 public class LogScheduler {
 

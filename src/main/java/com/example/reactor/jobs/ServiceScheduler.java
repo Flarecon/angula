@@ -3,13 +3,15 @@ package com.example.reactor.jobs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
+import com.example.angula.annotation.JobExecutor;
 import com.example.reactor.service.ServiceToService;
 
 import lombok.extern.slf4j.Slf4j;
+
+
 @Slf4j
-@Component
+@JobExecutor(format = "yt fetcher running at {timestamp}")
 @ConditionalOnProperty(name = "reactor.scheduler.yt", havingValue = "true", matchIfMissing = true)
 public class ServiceScheduler {
     
