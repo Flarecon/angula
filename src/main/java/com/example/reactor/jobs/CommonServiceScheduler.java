@@ -16,7 +16,7 @@ public class CommonServiceScheduler {
     @Autowired
     ServiceToService service;
     
-    @Scheduled(cron = "*/15 * * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void checkBeanInitialization(){
         System.out.println("bean initializer with data running at " + LocalDateTime.now());
         try{

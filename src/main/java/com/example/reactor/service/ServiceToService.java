@@ -86,6 +86,8 @@ public class ServiceToService {
                 }
                 else if(sheet.enabled.equals("FALSE")){
                     if(context.containsBeanDefinition(sheet.bean)){
+                        Object bean = context.getBean(sheet.bean);
+                        context.getBeanFactory().destroyBean(bean);
                         context.removeBeanDefinition(sheet.bean);
                         System.out.println(sheet.bean + " Bean Destroyed");
                         changes++;
