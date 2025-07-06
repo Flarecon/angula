@@ -13,7 +13,7 @@ public class LogScheduler {
         System.out.println("------------------------\nScheduler Initialised\n------------------------");
     }
 
-    @Scheduled(fixedRate = 60000) // if func takes longer than 60 seconds, it will run again and cause overlap
+    @Scheduled(fixedRate = 60000) // if func takes longer than 60 seconds, it will run again and will cause overlap
     public void runEveryFixed60Seconds() {
         System.out.println(
                 "------------------------\nScheduler running every  fixed 60 seconds\n------------------------");

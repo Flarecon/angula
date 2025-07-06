@@ -1,7 +1,4 @@
 package com.example.reactor.jobs;
-
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,7 +15,6 @@ public class CommonServiceScheduler {
     
     @Scheduled(cron = "0 * * * * *")
     public void checkBeanInitialization(){
-        System.out.println("bean initializer with data running at " + LocalDateTime.now());
         try{
             service.getSheetDataAndRegisterBean();
         }catch(Exception e){

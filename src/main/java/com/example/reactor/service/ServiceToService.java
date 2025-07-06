@@ -32,6 +32,9 @@ public class ServiceToService {
     @Value("${yt.playlist.key}")
     String playlistId;
 
+    @Value("${sheet.url}")
+    String sheetUrl;
+
     @Autowired
     @Qualifier("YtClient")
     public RestClient restClientYt;
@@ -57,7 +60,7 @@ public class ServiceToService {
 
         List<SheetData> data = null;
         try{
-            data = restClientSheet.get().uri("u5fpu5kogc31o")
+            data = restClientSheet.get().uri(sheetUrl)
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<SheetData>>() {});
         } catch (Exception e) {
