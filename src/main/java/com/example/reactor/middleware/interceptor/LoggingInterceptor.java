@@ -28,20 +28,20 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
             @Nullable Exception ex) throws Exception {
-        System.out.println(request.getRequestURI() + " " + response.getStatus());
+        System.out.println(request.getRequestURI() + " Intercepted " + response.getStatus());
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             @Nullable ModelAndView modelAndView) throws Exception {
-        System.out.println(request.getRequestURI() + " " + response.getStatus());
+        System.out.println(request.getRequestURI() + " Intercepted " + response.getStatus());
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String uri = request.getRequestURI();
-        System.out.println(uri + " " + response.getStatus());
+        System.out.println(uri + " Intercepted " + response.getStatus());
         
         // return uri.startsWith("/reactor") ? true : false;
         return true;

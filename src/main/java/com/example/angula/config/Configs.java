@@ -1,10 +1,13 @@
  package com.example.angula.config;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -66,5 +69,15 @@ import com.github.benmanes.caffeine.cache.Caffeine;
              builder.deserializers(new LocalDateTimeDeserializer(FORMATTER));
              builder.simpleDateFormat(DATETIME_FORMAT);
          };
+     }
+
+     @Bean 
+     String name(){
+        return "Angula";
+     }
+
+     @Bean
+     CommandLineRunner run(String name){
+        return arg -> {System.out.println("this is " + name + " at " + LocalDateTime.now());};
      }
  }
