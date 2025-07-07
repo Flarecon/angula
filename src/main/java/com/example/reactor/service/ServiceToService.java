@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class ServiceToService {
     GenericApplicationContext context;
 
     public void getSheetDataAndRegisterBean() throws Exception {
-        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
+        DefaultListableBeanFactory factory = context.getDefaultListableBeanFactory();
         int changes = 0;
 
         Class<?>[] classList = { ServiceScheduler.class, LogScheduler.class };
@@ -66,7 +67,7 @@ public class ServiceToService {
 
             for (SheetData sheet : data) {
                 if (sheet.enabled.equals("TRUE")) {
-                    if (!context.containsBean(sheet.bean)) {
+                    if (!factory.containsBean(sheet.bean)) {
                         Integer classIndex = -1;
 
                         try {
@@ -77,16 +78,16 @@ public class ServiceToService {
                         Class<?> className = sheet.index != null ? classList[classIndex] : null;
                         if (sheet.index != null && classIndex >= 0 && classIndex < classList.length) {
                             Object bean = factory.createBean(className);
-                            context.getBeanFactory().registerSingleton(sheet.bean, bean);
+                            factory.registerSingleton(sheet.bean, bean);
                             System.out.println(sheet.bean + " Bean Created of class " + className.getName());
                             changes++;
                         }
                     }
                 } else if (sheet.enabled.equals("FALSE")) {
-                    if (context.containsBeanDefinition(sheet.bean)) {
-                        Object bean = context.getBean(sheet.bean);
-                        context.getBeanFactory().destroyBean(bean);
-                        context.removeBeanDefinition(sheet.bean);
+                    if (factory.containsBean(sheet.bean)) {
+                        Object bean = factory.getBean(sheet.bean);
+                        factory.destroyBean(bean);
+                        factory.destroySingleton(sheet.bean);
                         System.out.println(sheet.bean + " Bean Destroyed");
                         changes++;
                     }
