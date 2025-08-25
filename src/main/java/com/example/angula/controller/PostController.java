@@ -2,6 +2,7 @@ package com.example.angula.controller;
 
 import com.example.angula.database.repository.PostRepo;
 import com.example.angula.database.model.Post;
+import com.example.reactor.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +20,17 @@ public class PostController {
     @Autowired
     PostRepo postRepo;
 
+    @Autowired
+    EventService eventService;
 
     @PostMapping
     public Post createPost(@RequestBody Post post) {
         return postRepo.save(post);
+    }
+
+    @PostMapping("/{id}")
+    public String createPostEvent(@PathVariable("id") String id) {
+        return eventService.createPost(id);
     }
 
     @GetMapping("/{id}")
