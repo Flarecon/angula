@@ -5,9 +5,9 @@ import com.example.reactor.event.events.PostCreatedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-@JobExecutor(format = "\n----- Event Triggered -----")
+@JobExecutor(format = "Event {method} of {class} Triggered at {timestamp}")
 @Component
-public class EventListner {
+public class CommonEventListener {
 
     @EventListener
     public void handlePostCreatedEvent(PostCreatedEvent event) {
