@@ -1,10 +1,12 @@
 package com.example.reactor.event.events;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class PostCreatedEvent {
-    private final String postId;
+    private String postId;
+    public Integer limit;
 }

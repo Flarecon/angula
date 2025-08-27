@@ -28,9 +28,9 @@ public class PostController {
         return postRepo.save(post);
     }
 
-    @PostMapping("/{id}")
-    public String createPostEvent(@PathVariable("id") String id) {
-        return eventService.createPost(id);
+    @PostMapping("/{id}/{limit}")
+    public String createPostEvent(@PathVariable("id") String id, @PathVariable("limit") Integer limit) {
+        return eventService.createPost(id, limit);
     }
 
     @GetMapping("/{id}")

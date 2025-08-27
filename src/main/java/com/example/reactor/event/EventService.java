@@ -11,10 +11,10 @@ public class EventService {
 
     private final ApplicationEventPublisher publisher;
 
-    public String createPost(String id) {
-        String successMessage = "post created by ID: " + id;
+    public String createPost(String id, Integer limit) {
+        String successMessage = "post created by ID: " + id + " & limit : " + limit;
         System.out.println(successMessage);
-        publisher.publishEvent(new PostCreatedEvent(id));
+        publisher.publishEvent(new PostCreatedEvent(id, limit));
         return successMessage;
     }
 }
