@@ -1,5 +1,6 @@
 package com.example.angula.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,10 +24,10 @@ import com.example.angula.security.jwt.JwtAuthFilter;
 @EnableWebSecurity
 @EnableMethodSecurity
 @EnableGlobalAuthentication
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    JwtAuthFilter jwtAuthFilter;
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

@@ -1,9 +1,11 @@
 package com.example.angula.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +20,10 @@ import com.example.angula.database.repository.ClientRepo;
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/client")
+@RequiredArgsConstructor
 public class ClientRestController {
-    @Autowired
-    ClientRepo clientRepo;
-
-    @Autowired
-    AngulaUserRepo userRepo;
+    private final ClientRepo clientRepo;
+    private final AngulaUserRepo userRepo;
 
     @Transactional
     @PostMapping
@@ -41,7 +41,7 @@ public class ClientRestController {
         return clientRepo.findById(id).get();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @GetMapping
     public ResponseEntity<List<AngulaClient>> getAllClients() {
         return ResponseEntity.ok(clientRepo.findAll());

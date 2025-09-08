@@ -1,5 +1,6 @@
 package com.example.reactor.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.angula.database.repository.AngulaUserRepo;
@@ -13,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/react")
 public class ReactRestController {
 
-    @Autowired
-    ClientRepo clientRepo;
-
-    @Autowired
-    AngulaUserRepo userRepo;
+    private final ClientRepo clientRepo;
+    private final AngulaUserRepo userRepo;
     
     @GetMapping
     public React DemoReactRes() {

@@ -5,6 +5,7 @@ import com.example.angula.database.repository.AngulaUserRepo;
 import com.example.angula.services.AngulaService;
 import com.example.reactor.error.ErrorTools;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +21,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/user")
 @Slf4j
 public class UserControlller {
 
-    @Autowired
-    PlatformTransactionManager transactionManager;
-
-    @Autowired
-    AngulaUserRepo userRepo;
-
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    AngulaService angulaService;
+    private final PlatformTransactionManager transactionManager;
+    private final AngulaUserRepo userRepo;
+    private final PasswordEncoder encoder;
+    private final AngulaService angulaService;
 
     @PostMapping
     @ResponseBody

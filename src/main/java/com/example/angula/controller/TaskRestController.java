@@ -1,5 +1,6 @@
 package com.example.angula.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,11 @@ import com.example.angula.database.repository.TaskRepo;
 
 @RestController
 @RequestMapping("/task")
+@RequiredArgsConstructor
 public class TaskRestController {
-    
-    @Autowired
-    private TaskRepo taskRepo;
 
-    @Autowired
-    private CacheManager cacheManager;
+    private final TaskRepo taskRepo;
+    private final CacheManager cacheManager;
     
     @GetMapping
     public Iterable<AngulaTask> getTasks() {

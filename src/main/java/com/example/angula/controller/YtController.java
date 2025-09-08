@@ -1,5 +1,6 @@
 package com.example.angula.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,11 +11,11 @@ import com.example.reactor.views.YtVideoData;
 import com.example.reactor.views.YtVideoRecord;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/video")
 public class YtController {
 
-    @Autowired
-    YtRepo ytRepo;
+    private final YtRepo ytRepo;
 
     @GetMapping
     public List<AngulaYt> getAllVideos() {

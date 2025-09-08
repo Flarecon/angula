@@ -1,5 +1,6 @@
 package com.example.angula.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -16,10 +17,10 @@ import com.example.angula.database.model.AngulaClient;
 
 @RestController
 @RequestMapping("/cache")
+@RequiredArgsConstructor
 public class CacheController {
 
-    @Autowired
-    CacheManager cacheManager;
+    private final CacheManager cacheManager;
 
     @Transactional
     @GetMapping("/{name}")

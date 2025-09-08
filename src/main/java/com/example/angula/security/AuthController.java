@@ -1,5 +1,6 @@
 package com.example.angula.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,12 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.angula.security.jwt.JwtUtil;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    AuthenticationManager authManager;
-
-    @Autowired
-    JwtUtil jwtUtils;
+    private final AuthenticationManager authManager;
+    private final JwtUtil jwtUtils;
 
     @PostMapping("/auth")
     public String authenticate(@RequestBody AuthData authData){
