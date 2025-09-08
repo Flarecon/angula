@@ -105,5 +105,21 @@
             <column name="updated_at" type="TIMESTAMP" />
         </createTable>
     </changeSet>
+
+    <changeSet id="10" author="alok">
+        <createTable tableName="pokemon">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="type" type="VARCHAR(20)"/>
+            <column name="attack" type="INT"/>
+            <column name="defense" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="alok">
+        <addUniqueConstraint tableName="pokemon" columnNames="name"/>
+    </changeSet>
     
 </databaseChangeLog>

@@ -1,5 +1,6 @@
 package com.example.reactor.enricher;
 
+import com.example.angula.controller.PokemonController;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import com.example.reactor.controller.ReactRestController;
 
 @Service
-@ControllerAdvice(basePackageClasses = ReactRestController.class)
+@ControllerAdvice(basePackageClasses = {ReactRestController.class, PokemonController.class})
 public class LoggerEnricher implements ResponseBodyAdvice<React> {
 
     @Override
