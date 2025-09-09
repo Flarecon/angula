@@ -1,5 +1,6 @@
 package com.example.angula.database.model;
 
+import com.example.angula.enums.PokemonCategory;
 import com.example.angula.enums.PokemonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -28,5 +29,8 @@ public class Pokemon {
 
     @Column(nullable = false)
     int defense;
+
+    @Transient
+    PokemonCategory category;
 
 }
