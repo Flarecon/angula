@@ -6,6 +6,7 @@ import com.example.angula.services.PokemonService;
 import com.example.reactor.enricher.React;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pokemon")
+@ConditionalOnProperty(name = "angula.dynamic.controller", havingValue = "pokemon", matchIfMissing = true)
 @RequiredArgsConstructor
 public class PokemonController {
 
