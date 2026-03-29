@@ -47,16 +47,19 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	implementation(platform("software.amazon.awssdk:bom:2.27.21"))
+
+	// TODO: implement S3 with Spring Cloud AWS starter also
 	implementation("software.amazon.awssdk:s3")
 	implementation("software.amazon.awssdk:sqs")
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs:3.1.1'
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sns:3.1.1'
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-dynamodb:3.1.1'
 
 	implementation 'org.liquibase:liquibase-core'
 	runtimeOnly 'org.postgresql:postgresql'
 	compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
