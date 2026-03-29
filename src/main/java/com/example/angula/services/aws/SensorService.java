@@ -21,4 +21,10 @@ public class SensorService {
                 SensorData.class
         );
     }
+    public void delete(String sensorId, Long timestamp) {
+        dynamoDbTemplate.delete(
+                Key.builder().partitionValue(sensorId).sortValue(timestamp).build(),
+                SensorData.class
+        );
+    }
 }
