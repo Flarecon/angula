@@ -12,9 +12,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "todos")
 public class AngulaTodo implements Serializable{
@@ -30,4 +32,21 @@ public class AngulaTodo implements Serializable{
     
     @JsonFormat(pattern = Constants.DATETIME_FORMAT)
     private LocalDateTime date = LocalDateTime.now();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AngulaTodo)) {
+            return false;
+        }
+        return id != null && id.equals(((AngulaTodo) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 }

@@ -3,9 +3,11 @@ package com.example.angula.database.model;
 import com.example.angula.auditor.VelocityAuditor;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "posts")
 public class Post extends VelocityAuditor{
@@ -14,4 +16,21 @@ public class Post extends VelocityAuditor{
     private Long id;
     private String title;
     private String content;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Post)) {
+            return false;
+        }
+        return id != null && id.equals(((Post) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 }

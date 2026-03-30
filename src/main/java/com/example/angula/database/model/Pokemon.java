@@ -4,9 +4,11 @@ import com.example.angula.enums.PokemonCategory;
 import com.example.angula.enums.PokemonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "pokemon")
 public class Pokemon {
@@ -32,5 +34,22 @@ public class Pokemon {
 
     @Transient
     PokemonCategory category;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Pokemon)) {
+            return false;
+        }
+        return id != null && id.equals(((Pokemon) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 
 }
