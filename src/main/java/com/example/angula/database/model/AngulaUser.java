@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.google.gson.annotations.Expose;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,17 +29,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class AngulaUser implements UserDetails {
     @Id
-    @Expose
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Expose
     @Column(length = 20, unique = true)
     String username;
 
+    @JsonIgnore
     String password;
 
-    @Expose
     @Column(length = 10)
     @Builder.Default
     String role = "USER";
