@@ -23,6 +23,21 @@ public class DiscountServiceTest {
         // 3. Assert (check the result)
         // we expect 100 * 0.9 to be 90.0
         assertThat(finalPrice).isEqualTo(90.0);
+
+        /*
+        TODO: Things to learn to advance testing
+
+        - Mockito : mock database
+        - WireMock : mock 3rd party platforms and returns mocked response
+        - ArchUnit : check code structure and flow like can't call database directly from controllers etc.
+        - PITest : intentionally breaks the code to check if test cases are working correctly
+
+        - @WebMvcTest : Only loads the Controllers if just to check api response
+        - @DataJpaTest : Only loads Database layer if just need to test database queries without invoking whole web server
+
+        - Testcontainers : uses Docker container to spin up a real and temporary needed things
+        - AI-Tools to check and suggest missing edge cases
+         */
     }
 
 }
