@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,14 @@ public class PokemonService {
     public String retryableMethod() {
         System.out.println("trying to find the pokemon...");
         throw new RuntimeException("pokemon not found");
+    }
+
+    // if after all attempts we still get exception,
+    // if that exception specific recovery exists it'll be executed with exception
+    @Recover
+    public String recoverMethodForRuntime(RuntimeException e) {
+        System.out.println(e.getMessage() + " retry failed recovery called");
+        return "fallback to recover: " + e.getMessage();
     }
 
 }
