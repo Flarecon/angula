@@ -41,4 +41,9 @@ public class PokemonController {
         return React.response(pokemonService.saveAll(pokemons));
     }
 
+    @GetMapping("retry")
+    public React<String> retryMethod() {
+        return React.response(pokemonService.retryableMethod());
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -22,6 +23,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 
 
  @Configuration
+ @EnableRetry
  @EnableWebMvc
  public class Configs {
      private static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
