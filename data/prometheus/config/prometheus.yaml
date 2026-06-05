@@ -4,6 +4,14 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
+  - job_name: 'grafana'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["host.docker.internal:3000"]
+    basic_auth:
+      username: admin
+      password_file: secret/grafana_password.txt # data/prometheus/config/secret/grafana_password.txt
+
   - job_name: 'spring-application'
     metrics_path: /actuator/prometheus
     scrape_interval: 4s
@@ -14,4 +22,4 @@ scrape_configs:
 
     basic_auth:
       username: prometheus
-      password_file: secret/password.txt # data/prometheus/config/secret/password.txt
+      password_file: secret/spring_password.txt # data/prometheus/config/secret/spring_password.txt
