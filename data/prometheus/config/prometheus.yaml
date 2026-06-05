@@ -4,10 +4,14 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'Angula Input'
+  - job_name: 'spring-application'
     metrics_path: /actuator/prometheus
-    scrape_interval: 2s
+    scrape_interval: 4s
     static_configs:
       - targets: ['host.docker.internal:8085']
         labels:
           application: 'angula'
+
+    basic_auth:
+      username: prometheus
+      password_file: secret/password.txt # data/prometheus/config/secret/password.txt

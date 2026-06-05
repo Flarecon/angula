@@ -3,6 +3,7 @@ package com.example.angula;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
@@ -15,6 +16,7 @@ excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value 
 @EnableCaching
 @EnableScheduling
 @EnableAsync
+@ConfigurationPropertiesScan
 @SpringBootApplication
 public class AngulaApplication {
 
